@@ -1,0 +1,52 @@
+--Task 1) Create User Table
+CREATE TABLE userTable(
+  id INTEGER PRIMARY KEY,
+  first_name TEXT NOT NULL,
+  last_name TEXT NOT NULL,
+  age INTEGER NOT NULL,
+  salary INTEGER NOT NULL
+);
+
+INSERT INTO userTable VALUES (1, 'Thanmaiii', 'Boddojuuu',21,24000);
+INSERT INTO userTable VALUES (2, 'Priyanka', 'Boddojuuuu',22,34000);
+INSERT INTO userTable VALUES (3, 'Lakshmiiii', 'Karanammmm',23,25000);
+INSERT INTO userTable VALUES (4, 'Jyothiiii', 'Macherlaaaa',24,26000);
+-- SELECT * FROM userTable;
+
+-- Task 2) Create Multiple Movies Tables and add to the User table(
+CREATE TABLE movieTable(
+  movie_id INTEGER PRIMARY KEY,
+  movie_name TEXT NOT NULL,
+  hero TEXT NOT NULL,
+  heroine TEXT NOT NULL,
+  price INTEGER NOT NULL,
+  rating INTEGER NOT NULL,
+  userId INTEGER NOT NULL,
+  FOREIGN KEY (userId) REFERENCES userTable(id)
+);
+
+INSERT INTO movieTable VALUES (1, "Brahmastra","hero1","isha",500,8,1);
+INSERT INTO movieTable VALUES (2, "Warriorrrrrr","hero1","isha",100,4,2);
+INSERT INTO movieTable VALUES (3, "Bloodddddd","hero2","asha",200,5,1);
+INSERT INTO movieTable VALUES (4, "Brahmastra2","hero3","sneha",150,7,1);
+INSERT INTO movieTable VALUES (5, "majili","asha","isha",250,3,1);
+INSERT INTO movieTable VALUES (6, "nenu local","nani","pallavi",50,9,4);
+
+-- SELECT * FROM movieTable;
+
+-- Task 3) Get List of all the movies watched by the User
+SELECT first_name, movie_name from userTable,movieTable where id=userId;
+
+-- Task 4)Get List of movies watched by the User and which movie ticket price is more than 150
+SELECT first_name, movie_name from userTable,movieTable where id=userId and price>150;
+
+-- Task 5)Get List of movies watched by the User and which movie rating below 5 out of 10
+SELECT first_name, movie_name from userTable,movieTable where id=userId and rating<5;
+
+-- Task 6) Get List of movies watched by the User and where heroin repeats more than or equal to 2
+-- times
+SELECT first_name,movie_name from movieTable,userTable where id=userId and heroine in (
+SELECT heroine from userTable,movieTable where id=userId group by heroine having count(heroine)>=2);
+
+-- Task 7)Print total and avg amount he spent on the movies
+SELECT first_name,sum(price),avg(price) from userTable,movieTable where id=userId group by first_name ;
